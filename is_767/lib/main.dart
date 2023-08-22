@@ -44,6 +44,42 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _invar_1() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _devar_1() {
+    setState(() {
+      _counter--;
+    });
+  }
+
+  void _invar_2() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _devar_2() {
+    setState(() {
+      _counter--;
+    });
+  }
+
+  void _mulvar_3() {
+    setState(() {
+      _counter *= 2;
+    });
+  }
+
+  void _devvar_3() {
+    setState(() {
+      _counter ~/= 2;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +108,45 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: _decrementCounter,
                   child: Text('---'),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: _invar_1,
+                  child: Text('+++'),
+                ),
+                ElevatedButton(
+                  onPressed: _devar_1,
+                  child: Text('---'),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: _devar_2,
+                  child: Text('---'),
+                ),
+                ElevatedButton(
+                  onPressed: _invar_2,
+                  child: Text('+++'),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: _mulvar_3,
+                  child: Text('***'),
+                ),
+                ElevatedButton(
+                  onPressed: _devvar_3,
+                  child: Text('///'),
                 ),
               ],
             ),

@@ -30,53 +30,43 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _var1 = 10;
+  int _var2 = 10;
+  int _var3 = 10;
 
-  void _incrementCounter() {
+  void _invar1() {
     setState(() {
-      _counter++;
+      _var1++;
     });
   }
 
-  void _decrementCounter() {
+  void _devar1() {
     setState(() {
-      _counter--;
+      _var1--;
     });
   }
 
-  void _invar_1() {
+  void _invar2() {
     setState(() {
-      _counter++;
+      _var2++;
     });
   }
 
-  void _devar_1() {
+  void _devar2() {
     setState(() {
-      _counter--;
+      _var2--;
     });
   }
 
-  void _invar_2() {
+  void _mulvar3() {
     setState(() {
-      _counter++;
+      _var3 *= 2;
     });
   }
 
-  void _devar_2() {
+  void _devvar3() {
     setState(() {
-      _counter--;
-    });
-  }
-
-  void _mulvar_3() {
-    setState(() {
-      _counter *= 2;
-    });
-  }
-
-  void _devvar_3() {
-    setState(() {
-      _counter ~/= 2;
+      _var3 ~/= 2;
     });
   }
 
@@ -94,19 +84,19 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Text(
+                  '$_var1',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 ElevatedButton(
-                  onPressed: _incrementCounter,
+                  onPressed: _invar1,
                   child: Text('+++'),
                 ),
                 ElevatedButton(
-                  onPressed: _decrementCounter,
+                  onPressed: _devar1,
                   child: Text('---'),
                 ),
               ],
@@ -114,25 +104,16 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(
-                  onPressed: _invar_1,
-                  child: Text('+++'),
+                Text(
+                  '$_var2',
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 ElevatedButton(
-                  onPressed: _devar_1,
-                  child: Text('---'),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: _devar_2,
+                  onPressed: _devar2,
                   child: Text('---'),
                 ),
                 ElevatedButton(
-                  onPressed: _invar_2,
+                  onPressed: _invar2,
                   child: Text('+++'),
                 ),
               ],
@@ -140,23 +121,22 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Text(
+                  '$_var3',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 ElevatedButton(
-                  onPressed: _mulvar_3,
+                  onPressed: _mulvar3,
                   child: Text('***'),
                 ),
                 ElevatedButton(
-                  onPressed: _devvar_3,
+                  onPressed: _devvar3,
                   child: Text('///'),
                 ),
               ],
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:is_767/pages/fifth_page.dart';
 import 'package:is_767/pages/first_page.dart';
 import 'package:is_767/pages/fourth_page.dart';
 import 'package:is_767/pages/second_page.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/2': (context) => SecondPage(),
         '/3': (context) => ThirdPage(),
         '/4': (context) => FourthPage(),
+        '/5': (context) => Fifthpage(),
       },
     );
   }

@@ -5,9 +5,15 @@ import 'package:is_767/pages/fourth_page.dart';
 import 'package:is_767/pages/second_page.dart';
 import 'package:is_767/pages/third_page.dart';
 import 'package:is_767/pages/home_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => PreferenceModel()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

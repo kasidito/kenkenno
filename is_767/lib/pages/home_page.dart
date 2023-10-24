@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 2,
-        children: List.generate(5, (index) {
+        children: List.generate(6, (index) {
           return InkWell(
             onTap: () {
               Navigator.pushNamed(context, '/${index + 1}');

@@ -3,6 +3,7 @@ import 'package:is_767/pages/fifth_page.dart';
 import 'package:is_767/pages/first_page.dart';
 import 'package:is_767/pages/fourth_page.dart';
 import 'package:is_767/pages/second_page.dart';
+import 'package:is_767/pages/sixth_page.dart';
 import 'package:is_767/pages/third_page.dart';
 import 'package:is_767/pages/home_page.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/3': (context) => ThirdPage(),
         '/4': (context) => FourthPage(),
         '/5': (context) => Fifthpage(),
+        '/6': (context) => SixthPage(),
       },
     );
   }

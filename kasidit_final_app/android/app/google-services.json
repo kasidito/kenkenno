@@ -1,0 +1,219 @@
+{
+  "project_info": {
+    "project_number": "213503363945",
+    "project_id": "is767-2023-final-exam",
+    "storage_bucket": "is767-2023-final-exam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:8ada1b6e7556457bf44bf8",
+        "android_client_info": {
+          "package_name": "com.example.burin_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:eec637c62e303c8df44bf8",
+        "android_client_info": {
+          "package_name": "com.example.jidapa_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:4a928b9f9278995ff44bf8",
+        "android_client_info": {
+          "package_name": "com.example.jirayu_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:660e54ad66f841f0f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.jitsukon_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:b67e2d7563daf605f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.kasidit_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:26ff7fbba39b2097f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.korrarit_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:d9aa71573a31e71ff44bf8",
+        "android_client_info": {
+          "package_name": "com.example.samatcha_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:79c33fd4714cf775f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.suchawanant_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:6f946b253db81e10f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.thotsapon_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:a2d0039f0ddf05e7f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.yupa_final_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503363945:android:5fb35da791ecd648f44bf8",
+        "android_client_info": {
+          "package_name": "com.example.yupa_finalexam_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnt7VfJl089LF0ESR4ryGwG2nPTlrC3ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

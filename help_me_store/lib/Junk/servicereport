@@ -1,0 +1,865 @@
+import 'package:flutter/material.dart';
+import 'package:help_me_store/Model/projects_Model.dart';
+import 'package:help_me_store/Model/serviceReport_Model.dart';
+import 'package:help_me_store/Pages/serviceReport_detail.dart';
+import 'package:help_me_store/Pages/serviceReport_history.dart';
+
+import 'package:help_me_store/Widgets/font.dart';
+import 'package:help_me_store/Widgets/input_field.dart';
+import 'package:help_me_store/Model/tasks_Model.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
+
+class ServiceReportPage extends StatefulWidget {
+  @override
+  State<ServiceReportPage> createState() => _ServiceReportPageState();
+}
+
+class _ServiceReportPageState extends State<ServiceReportPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  //Service Report Header
+  //Missing > taskId, ticketId, serviceName, status
+  //Link to project, task and ticket > projectName, taskType, taskId, ticketId, serviceName
+  final TextEditingController _projectnameController = TextEditingController();
+  final TextEditingController _taskTypeController = TextEditingController();
+  DateTime _serviceDate = DateTime.now();
+
+  final TextEditingController _brandController = TextEditingController();
+  final TextEditingController _modelController = TextEditingController();
+  final TextEditingController _serialController = TextEditingController();
+
+  //Service Report Details
+  num? _ambientTemp;
+  num? _sumpPressLoad;
+  num? _sumpPressUnLoad;
+  num? _dischPressLoad;
+  num? _dischPressUnLoad;
+  num? _airEndDischTemp;
+  num? _airDischTemp;
+  num? _firstDischPressTwoStage;
+  num? _pressureDrop;
+  num? _airFilterHr;
+  num? _oilFilterHr;
+  num? _separatorHr;
+  num? _lubricantHr;
+  num? _inletValveHr;
+  num? _blowDownHr;
+  num? _minCheckValveHr;
+  String? _hoses;
+  num? _hosesHr;
+  num? watertemp;
+  num? _couplingHr;
+  num? _voltageLoad;
+  num? _voltageUnload;
+  num? _currentLoad;
+  num? _currentUnload;
+  bool? _thermostaticValve = true;
+  bool? _solenoidValve = true;
+  bool? _autoDrain = true;
+  bool? _tempSensor = true;
+  bool? _pressureSensor = true;
+  bool? _mainMotor = true;
+  bool? _fanMotor = true;
+  bool? _magneticContactor = true;
+  bool? _scavenging = true;
+  bool? _boardControl = true;
+  bool? _emergencyStop = true;
+  bool? _sound = true;
+
+  final TextEditingController _problemController = TextEditingController();
+  final TextEditingController _recommendController = TextEditingController();
+  var uuid = Uuid();
+  String? _selectedTaskType;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final taskProvider = Provider.of<TaskProvider>(context);
+    // Assuming you want to display the project name and task type of the first task
+    if (taskProvider.tasks.isNotEmpty) {
+      _projectnameController.text =
+          taskProvider.tasks.first.projectName?.projectName ?? '';
+      _taskTypeController.text = taskProvider.tasks.first.taskType ?? '';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(
+          'Create Service Report',
+          style: headingTextStyle,
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InputField(
+                title: "Project Name",
+                hint: "Enter Project Name",
+                controller: _projectnameController,
+                isDropdown: false,
+              ),
+              InputField(
+                title: "Task Type",
+                hint: _selectedTaskType,
+                dropdownItems: taskTypes,
+                onDropdownChanged: (newtasktype) {
+                  setState(() {
+                    _selectedTaskType = newtasktype;
+                  });
+                },
+                isDropdown: true,
+                isvalidator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a Task type';
+                  }
+                  return null; // return null if the input is valid
+                },
+              ),
+              InputField(
+                title: "Service Date",
+                hint: DateFormat.yMd().format(_serviceDate),
+                widget: IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: () {
+                    _getDateFromUser();
+                  },
+                ),
+              ),
+              InputField(
+                title: "Brand",
+                controller: _brandController,
+                isvalidator: (value) {
+                  if (value == null) {
+                    return 'Please enter a brand';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Model",
+                controller: _modelController,
+                isvalidator: (value) {
+                  if (value == null) {
+                    return 'Please enter a brand';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Serial Number",
+                controller: _serialController,
+                isvalidator: (value) {
+                  if (value == null) {
+                    return 'Please enter a brand';
+                  }
+                  return null;
+                },
+              ),
+              //Service Report Details
+              InputField(
+                title: "Ambient Temperature",
+                hint: 'Max 45°C',
+                controller:
+                    TextEditingController(text: _ambientTemp?.toString() ?? ''),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter ambient temperature';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Sump Pressure Load",
+                hint: '5-13 bar',
+                controller:
+                    TextEditingController(text: _sumpPressLoad?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Sump Pressure at Load';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Sump Pressure at Unload",
+                hint: '1-3.5 bar',
+                controller:
+                    TextEditingController(text: _sumpPressUnLoad?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Sump Pressure at Unload';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Discharge at Load",
+                controller:
+                    TextEditingController(text: _dischPressLoad?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Discharge at Load';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Discharge at Unload",
+                hint: '5-13 bar',
+                controller:
+                    TextEditingController(text: _dischPressUnLoad?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Discharge at Unload';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Air End Discharge Temperature",
+                controller:
+                    TextEditingController(text: _airEndDischTemp?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Air End Discharge Temperature';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Air Discharge Temperature",
+                controller:
+                    TextEditingController(text: _airDischTemp?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Air Discharge Temperature';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "First Discharge Pressure Two Stage",
+                controller: TextEditingController(
+                    text: _firstDischPressTwoStage?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter First Discharge Pressure Two Stage';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Pressure Drop",
+                controller:
+                    TextEditingController(text: _pressureDrop?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Pressure Drop';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Air Filter Hours",
+                controller:
+                    TextEditingController(text: _airFilterHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Air Filter Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Oil Filter Hours",
+                controller:
+                    TextEditingController(text: _oilFilterHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Oil Filter Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Separator Hours",
+                controller:
+                    TextEditingController(text: _separatorHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Separator Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Lubricant Hours",
+                controller:
+                    TextEditingController(text: _lubricantHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Lubricant Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Inlet Valve Hours",
+                controller:
+                    TextEditingController(text: _inletValveHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Inlet Valve Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Blow Down Hours",
+                controller:
+                    TextEditingController(text: _blowDownHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Blow Down Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Minimum Check Valve Hours",
+                controller:
+                    TextEditingController(text: _minCheckValveHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Minimum Check Valve Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Hoses",
+                controller: TextEditingController(text: _hoses),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Hoses';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Hoses Hours",
+                controller: TextEditingController(text: _hosesHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Hoses Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Water Temperature",
+                controller: TextEditingController(text: watertemp?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Water Temperature';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Coupling Hours",
+                controller:
+                    TextEditingController(text: _couplingHr?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Coupling Hours';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                title: "Voltage Load",
+                controller:
+                    TextEditingController(text: _voltageLoad?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Voltage Load';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+
+              InputField(
+                title: "Voltage Unload",
+                controller:
+                    TextEditingController(text: _voltageUnload?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Voltage Unload';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              InputField(
+                  title: "Current Load",
+                  controller:
+                      TextEditingController(text: _currentLoad?.toString()),
+                  isvalidator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Current Load';
+                    }
+                    if (num.tryParse(value) == null) {
+                      return 'Please enter a only number';
+                    }
+                    return null;
+                  }),
+              InputField(
+                title: "Current Unload",
+                controller:
+                    TextEditingController(text: _currentUnload?.toString()),
+                isvalidator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Current Unload';
+                  }
+                  if (num.tryParse(value) == null) {
+                    return 'Please enter a only number';
+                  }
+                  return null;
+                },
+              ),
+              // ... Continue for all numeric fields ...
+
+              InputField(
+                title: "Thermostatic Valve",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _thermostaticValve,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _thermostaticValve = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Solenoid Valve",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _solenoidValve,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _solenoidValve = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Auto Drain",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _autoDrain,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _autoDrain = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Temperature Sensor",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _tempSensor,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _tempSensor = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Pressure Sensor",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _pressureSensor,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _pressureSensor = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Main Motor",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _mainMotor,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _mainMotor = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Fan Motor",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _fanMotor,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _fanMotor = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Magnetic Contactor",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _magneticContactor,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _magneticContactor = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Scavenging",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _scavenging,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _scavenging = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Board Control",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _boardControl,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _boardControl = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Emergency Stop",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _emergencyStop,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _emergencyStop = newValue;
+                  });
+                },
+              ),
+              InputField(
+                title: "Sound",
+                isBooleanDropdown: true,
+                booleanDropdownValue: _sound,
+                onBooleanDropdownChanged: (bool? newValue) {
+                  setState(() {
+                    _sound = newValue;
+                  });
+                },
+              ),
+
+              // ... Continue for all boolean fields ...
+              InputField(
+                title: "Problem",
+                controller: _problemController,
+              ),
+              InputField(
+                title: "Recommendation",
+                controller: _recommendController,
+              ),
+
+              // ... Add other InputFields as needed ...
+              SizedBox(height: 16.0),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Create a new ServiceReport object and populate it with values
+                      final newServiceReport = ServiceReport(
+                        Id: uuid.v4(),
+                        projectName: _projectnameController.text,
+                        taskType: _taskTypeController.text,
+                        serviceDate: _serviceDate,
+                        brand: _brandController.text,
+                        model: _modelController.text,
+                        serial: _serialController.text,
+                        ambientTemp: _ambientTemp,
+                        sumpPressLoad: _sumpPressLoad,
+                        sumpPressUnLoad: _sumpPressUnLoad,
+                        dischPressLoad: _dischPressLoad,
+                        dischPressUnLoad: _dischPressUnLoad,
+                        airEndDischTemp: _airEndDischTemp,
+                        airDischTemp: _airDischTemp,
+                        firstDischPressTwoStage: _firstDischPressTwoStage,
+                        pressureDrop: _pressureDrop,
+                        airFilterHr: _airFilterHr,
+                        oilFilterHr: _oilFilterHr,
+                        separatorHr: _separatorHr,
+                        lubricantHr: _lubricantHr,
+                        inletValveHr: _inletValveHr,
+                        blowDownHr: _blowDownHr,
+                        minCheckValveHr: _minCheckValveHr,
+                        hoses: _hoses,
+                        hosesHr: _hosesHr,
+                        waterTemp: watertemp,
+                        couplingHr: _couplingHr,
+                        voltageLoad: _voltageLoad,
+                        voltageUnload: _voltageUnload,
+                        currentLoad: _currentLoad,
+                        currentUnload: _currentUnload,
+                        thermostaticValve: _thermostaticValve,
+                        solenoidValve: _solenoidValve,
+                        autoDrain: _autoDrain,
+                        tempSensor: _tempSensor,
+                        pressureSensor: _pressureSensor,
+                        mainMotor: _mainMotor,
+                        fanMotor: _fanMotor,
+                        magneticContactor: _magneticContactor,
+                        scavenging: _scavenging,
+                        boardControl: _boardControl,
+                        emergencyStop: _emergencyStop,
+                        sound: _sound,
+                        problem: _problemController.text,
+                        recommend: _recommendController.text,
+                      );
+
+                      Provider.of<ServiceReportProvider>(context, listen: false)
+                          .addReport(newServiceReport);
+
+                      // Optionally navigate back to the previous screen
+                      // Navigate to the ServiceReportHistory page with the new service report data
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ServiceReportDetailPage(
+                              serviceReport: newServiceReport),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text('Create Task'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _getDateFromUser() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _serviceDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null && pickedDate != _serviceDate) {
+      setState(() {
+        _serviceDate = pickedDate;
+      });
+    }
+  }
+}
+
+
+
+
+
+Column(
+                children: [
+                  _buildSwitchInputField(
+                    title: "Thermostatic Valve",
+                    value: _serviceReport.thermostaticValve ?? false,
+                    onChanged: (newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.thermostaticValve = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Solenoid Valve",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.solenoidValve,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.solenoidValve = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Auto Drain",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.autoDrain,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.autoDrain = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Temperature Sensor",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.tempSensor,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.tempSensor = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Pressure Sensor",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.pressureSensor,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        _serviceReport.pressureSensor = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Main Motor",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.mainMotor,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.mainMotor = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Fan Motor",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.fanMotor,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.fanMotor = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Magnetic Contactor",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.magneticContactor,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.magneticContactor = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Scavenging",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.scavenging,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.scavenging = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Board Control",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.boardControl,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.boardControl = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Emergency Stop",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.emergencyStop,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.emergencyStop = newValue;
+                      });
+                    },
+                  ),
+                  InputField(
+                    title: "Sound",
+                    isBooleanDropdown: true,
+                    booleanDropdownValue: _serviceReport.sound,
+                    onBooleanDropdownChanged: (bool? newValue) {
+                      setState(() {
+                        print(newValue);
+                        _serviceReport.sound = newValue;
+                      });
+                    },
+                  ),
+                ],
+              ),
